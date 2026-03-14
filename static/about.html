@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – CropSense</title>
+    <meta name="description" content="About CropSense — an AI-powered plant disease diagnostic tool built with PyTorch, FastAPI, and ResNet-18.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,700;6..72,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+    <style>
+        /* Hero */
+        .about-hero {
+            padding: 9rem 8rem 5rem 8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 6rem;
+        }
+        .hero-left { flex: 1.2; }
+        .hero-right { flex: 1; display: flex; align-items: center; justify-content: center; }
+
+        .tag {
+            display: inline-flex; align-items: center; gap: 10px;
+            color: var(--text-light-green); font-size: 0.75rem; font-weight: 700;
+            letter-spacing: 1.5px; margin-bottom: 1.5rem;
+        }
+        .tag .line { width: 28px; height: 1px; background: var(--text-light-green); }
+        .about-hero h1 {
+            font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px;
+            line-height: 1.1; margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #a7f3d0 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .about-hero .lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.75; }
+
+        /* Mission card */
+        .mission-card {
+            background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(5,150,105,0.06) 100%);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: var(--border-radius-xl);
+            padding: 2.5rem;
+            max-width: 400px;
+        }
+        .mission-card .m-label {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+            color: var(--text-light-green); margin-bottom: 1rem;
+        }
+        .mission-card blockquote {
+            font-family: 'Newsreader', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* Why section */
+        .why-section { padding: 0 8rem 6rem 8rem; }
+        .section-label {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-light-green); font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 1.5px; margin-bottom: 1rem;
+        }
+        .section-label .line { width: 24px; height: 1px; background: var(--text-light-green); }
+        .section-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.75rem; color: var(--text-dark); }
+        .section-subtitle { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 3rem; max-width: 540px; }
+
+        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .why-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius-xl);
+            padding: 2rem;
+            transition: transform 0.25s, border-color 0.25s;
+        }
+        .why-card:hover { transform: translateY(-4px); border-color: rgba(16,185,129,0.3); }
+        .why-icon {
+            font-size: 1.8rem; margin-bottom: 1.25rem;
+        }
+        .why-card h3 { font-size: 1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.6rem; }
+        .why-card p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* Tech stack */
+        .tech-section { padding: 0 8rem 6rem 8rem; }
+        .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+        .tech-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius-lg);
+            padding: 1.75rem;
+            text-align: center;
+            transition: transform 0.25s, border-color 0.25s;
+        }
+        .tech-card:hover { transform: translateY(-3px); border-color: rgba(16,185,129,0.3); }
+        .tech-logo { font-size: 2rem; margin-bottom: 0.75rem; }
+        .tech-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.3rem; }
+        .tech-card p { font-size: 0.78rem; color: var(--text-muted); }
+        .tech-role {
+            display: inline-block; margin-top: 0.75rem;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.8px;
+            background: rgba(16,185,129,0.12); color: var(--text-light-green);
+            padding: 0.25rem 0.6rem; border-radius: 6px;
+        }
+
+        /* Timeline */
+        .timeline-section { padding: 0 8rem 6rem 8rem; }
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--text-light-green) 0%, transparent 100%);
+        }
+        .timeline-item {
+            position: relative; padding-left: 2.5rem; margin-bottom: 2.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute; left: -2.5rem; top: 6px;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--text-light-green);
+            border: 2px solid var(--bg-main);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+        }
+        .timeline-phase {
+            font-size: 0.7rem; font-weight: 700; color: var(--text-light-green);
+            letter-spacing: 1.5px; margin-bottom: 0.4rem;
+        }
+        .timeline-item h3 { font-size: 1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem; }
+        .timeline-item p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* CTA */
+        .cta-section {
+            margin: 0 8rem 6rem 8rem;
+            background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(5,150,105,0.06) 100%);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: var(--border-radius-xl);
+            padding: 4rem;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px;
+            color: var(--text-dark); margin-bottom: 1rem;
+        }
+        .cta-section p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2.5rem; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--bg-dark-accent); color: white;
+            border: none; padding: 1rem 2.5rem;
+            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            letter-spacing: 0.5px; cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover { background: var(--bg-dark-accent-hover); transform: translateY(-1px); }
+        .btn-secondary {
+            background: transparent; color: var(--text-dark);
+            border: 1px solid var(--border-light); padding: 1rem 2.5rem;
+            border-radius: 12px; font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-secondary:hover { border-color: rgba(16,185,129,0.4); color: var(--text-light-green); }
+
+        /* Future Roadmap */
+        .roadmap-section { padding: 0 8rem 6rem 8rem; }
+        .roadmap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+        .roadmap-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .roadmap-check {
+            width: 28px; height: 28px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .roadmap-check.planned { background: rgba(16,185,129,0.12); color: var(--text-light-green); }
+        .roadmap-check.future { background: rgba(148,163,184,0.1); color: var(--text-muted); }
+        .roadmap-item h4 { font-size: 0.9rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.3rem; }
+        .roadmap-item p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+        @media(max-width: 1024px) {
+            .about-hero { flex-direction: column; padding: 6rem 2rem 3rem; gap: 2rem; }
+            .why-section, .tech-section, .timeline-section, .roadmap-section, .cta-section { padding-left: 2rem; padding-right: 2rem; }
+            .cta-section { margin-left: 2rem; margin-right: 2rem; }
+            .why-grid, .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            .roadmap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 1 8.3C11.6 9 7.1 14 11 20c.3-.8.6-1.6.8-2M11 20c-1.3-4-4.6-7-8V9h0"/>
+                </svg>
+            </div>
+            <a href="/" style="text-decoration:none"><span class="logo-text">CropSense</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/">HOME</a>
+            <a href="how-it-works.html">HOW IT WORKS</a>
+            <a href="supported-crops.html">SUPPORTED CROPS</a>
+            <a href="about.html" style="color: var(--text-dark);">ABOUT</a>
+            <span class="api-badge">API v1.2</span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="about-hero">
+        <div class="hero-left">
+            <div class="tag"><span class="line"></span> THE PROJECT</div>
+            <h1>AI diagnostics for<br><span style="font-family:'Newsreader',serif;font-style:italic;">every farmer</span></h1>
+            <p class="lead">CropSense is a deep learning project that puts plant disease detection in the hands of anyone with a smartphone camera. Trained on tens of thousands of leaf images, it identifies 23 disease conditions across 8 crop families with near-expert accuracy — instantly and for free.</p>
+        </div>
+        <div class="hero-right">
+            <div class="mission-card">
+                <div class="m-label">OUR MISSION</div>
+                <blockquote>"Making accurate crop disease diagnosis accessible to every farmer, everywhere — powered by open-source AI."</blockquote>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Section -->
+    <div class="why-section">
+        <div class="section-label"><span class="line"></span> WHY CROPSENSE</div>
+        <h2 class="section-title">The problem we're solving</h2>
+        <p class="section-subtitle">Crop diseases destroy an estimated 20–40% of global agricultural production each year. Early and accurate diagnosis is the most impactful intervention.</p>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <h3>Instant Diagnosis</h3>
+                <p>Traditional disease identification requires physical lab samples and days of waiting. CropSense delivers results in under one second from any photo.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🎯</div>
+                <h3>High Accuracy</h3>
+                <p>Our fine-tuned ResNet-18 model achieves ~96% validation accuracy on the PlantVillage benchmark — comparable to expert agronomist performance.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🌍</div>
+                <h3>Accessible</h3>
+                <p>No special equipment needed. Any photo taken with a standard smartphone camera in good natural lighting is sufficient for reliable diagnosis.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🔓</div>
+                <h3>Open Source</h3>
+                <p>The full training pipeline, model weights, and web application are available on GitHub under an open license for the research community.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🧠</div>
+                <h3>Transfer Learning</h3>
+                <p>By building on ImageNet pre-trained weights, the model achieves excellent accuracy even with the limited scope of the PlantVillage dataset.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">📱</div>
+                <h3>Web-Native</h3>
+                <p>No app installation required. The diagnostic tool runs entirely in your browser via FastAPI and can be hosted on any server or local machine.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="tech-section">
+        <div class="section-label"><span class="line"></span> TECH STACK</div>
+        <h2 class="section-title">Built with modern tools</h2>
+        <p class="section-subtitle">Every component from model training to production serving is built on industry-standard, open-source frameworks.</p>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-logo">🔥</div>
+                <h4>PyTorch</h4>
+                <p>Deep learning framework for model training and inference</p>
+                <span class="tech-role">ML BACKBONE</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🏛️</div>
+                <h4>ResNet-18</h4>
+                <p>18-layer residual network from torchvision.models</p>
+                <span class="tech-role">ARCHITECTURE</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">⚡</div>
+                <h4>FastAPI</h4>
+                <p>High-performance async web framework for the prediction API</p>
+                <span class="tech-role">BACKEND API</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🦄</div>
+                <h4>Uvicorn</h4>
+                <p>ASGI server running FastAPI in production and development</p>
+                <span class="tech-role">ASGI SERVER</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🖼️</div>
+                <h4>Pillow</h4>
+                <p>Image loading and RGB conversion before preprocessing</p>
+                <span class="tech-role">IMAGE I/O</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🔭</div>
+                <h4>torchvision</h4>
+                <p>Pre-trained weights, transforms, and ImageFolder loading</p>
+                <span class="tech-role">VISION UTILS</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🌿</div>
+                <h4>PlantVillage</h4>
+                <p>54,000+ labeled images of healthy and diseased plant leaves</p>
+                <span class="tech-role">DATASET</span>
+            </div>
+            <div class="tech-card">
+                <div class="tech-logo">🌐</div>
+                <h4>HTML / CSS / JS</h4>
+                <p>Vanilla frontend with drag-and-drop upload and animated results</p>
+                <span class="tech-role">FRONTEND</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Development Timeline -->
+    <div class="timeline-section">
+        <div class="section-label"><span class="line"></span> DEVELOPMENT JOURNEY</div>
+        <h2 class="section-title">How the project was built</h2>
+        <p class="section-subtitle">From dataset research to a fully functional web application.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-phase">PHASE 01</div>
+                <h3>Dataset Preparation</h3>
+                <p>Downloaded and organized the PlantVillage dataset into 23 category folders. Implemented a custom <code>dataset.py</code> using <code>ImageFolder</code> with a 70/15/15 train/val/test split and reproducible seeding.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-phase">PHASE 02</div>
+                <h3>Model Design</h3>
+                <p>Chose ResNet-18 for its ideal balance between accuracy and inference speed. Replaced the final fully-connected layer with a 23-class linear layer and loaded ImageNet pre-trained weights.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-phase">PHASE 03</div>
+                <h3>Training &amp; Evaluation</h3>
+                <p>Fine-tuned using Adam optimizer with CrossEntropyLoss. Saved the best model checkpoint based on validation loss. Achieved ~96% validation accuracy on the held-out test set.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-phase">PHASE 04</div>
+                <h3>FastAPI Integration</h3>
+                <p>Built a <code>/predict</code> POST endpoint that accepts image uploads, runs the full preprocessing pipeline and inference in-memory, and returns a JSON response with class name and confidence.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-phase">PHASE 05</div>
+                <h3>Frontend &amp; UI</h3>
+                <p>Designed a premium dark-theme web interface with drag-and-drop upload, animated confidence bars, a tab component for diagnosis details, and a full results view — all in vanilla HTML/CSS/JS.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Future Roadmap -->
+    <div class="roadmap-section">
+        <div class="section-label"><span class="line"></span> ROADMAP</div>
+        <h2 class="section-title">What's coming next</h2>
+        <p class="section-subtitle">Planned improvements and future enhancements for CropSense.</p>
+
+        <div class="roadmap-grid">
+            <div class="roadmap-item">
+                <div class="roadmap-check planned">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div>
+                    <h4>Online Deployment</h4>
+                    <p>Host the application on a cloud provider (Railway, Render, or AWS EC2) for public access without local setup.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-check planned">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div>
+                    <h4>Mobile PWA</h4>
+                    <p>Convert the web app into a Progressive Web App with installable icons and offline support for field use.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-check future">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <div>
+                    <h4>More Crop Species</h4>
+                    <p>Expand the model to cover tomato, wheat, rice, and soybean using larger datasets like iNaturalist.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-check future">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <div>
+                    <h4>Treatment Recommendations</h4>
+                    <p>Add a database of evidence-based treatment protocols for each diagnosed disease class, including organic and chemical options.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-check future">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <div>
+                    <h4>GradCAM Visualization</h4>
+                    <p>Overlay activation heatmaps on the input image so users can see exactly which leaf region influenced the prediction.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-check future">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <div>
+                    <h4>Multi-language Support</h4>
+                    <p>Localize the interface to Hindi, Swahili, and other languages spoken by farming communities globally.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+        <h2>Ready to diagnose your crops?</h2>
+        <p>Upload a leaf photo and get an instant AI-powered diagnosis — no signup required, completely free.</p>
+        <div class="cta-buttons">
+            <a href="/" class="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Analyze a Leaf Now
+            </a>
+            <a href="https://github.com/AdarshRaj-404/Crop_disease_prediction" target="_blank" class="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                View on GitHub
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="copy">© 2026 CropSense - Powered by ResNet-18 Model</div>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">API Docs</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+</body>
+</html>
