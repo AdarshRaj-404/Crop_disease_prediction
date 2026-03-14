@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropSense - AI Plant Diagnostics</title>
+    <!-- Using a combination of Inter and a geometric serif (like Playfair or Newsreader) to match the mockup -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,700;6..72,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 1 8.3C11.6 9 7.1 14 11 20c.3-.8.6-1.6.8-2M11 20c-1.3-4-4.6-7-8V9h0"/>
+                </svg>
+            </div>
+            <span class="logo-text">CropSense</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">HOW IT WORKS</a>
+            <a href="#">SUPPORTED CROPS</a>
+            <a href="#">ABOUT</a>
+            <span class="api-badge">API v1.2</span>
+        </div>
+    </nav>
+
+    <div class="split-layout">
+        <!-- Left Column -->
+        <div class="left-pane">
+            <div class="hero-content">
+                <div class="subtitle-badge">
+                    <span class="line"></span> AI-POWERED DIAGNOSTICS
+                </div>
+                
+                <h1>Detect <span class="accent-italic">plant disease</span><br>in seconds</h1>
+                
+                <p class="hero-desc">
+                    Upload a photo of your crop leaf and let our deep learning model instantly identify diseases across 23 disease classes from 14 crop species — with treatment recommendations.
+                </p>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">23</span>
+                        <span class="stat-label">DISEASE CLASSES</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">14</span>
+                        <span class="stat-label">CROP SPECIES</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">96%</span>
+                        <span class="stat-label">ACCURACY</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="leaf-watermark">
+                <svg viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 0C50 0 100 50 100 100C100 150 50 200 50 200C50 200 0 150 0 100C0 50 50 0 50 0Z" fill="currentColor"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-pane">
+            <div class="background-circles"></div>
+
+            <!-- Upload Flow Widget -->
+            <div class="analysis-widget" id="upload-widget">
+                <div class="widget-header">
+                    <span>LEAF ANALYSIS</span>
+                    <span class="status-dot"></span>
+                </div>
+                
+                <div class="widget-body" id="drop-zone">
+                    <!-- Upload Area -->
+                    <div class="upload-area">
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <div class="placeholder-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <p class="primary-text">Drag & drop image here</p>
+                            <p class="secondary-text">or <button class="btn-text-upload" id="browse-btn">browse files</button></p>
+                        </div>
+                    </div>
+                    
+                    <!-- File Info (Hidden initially) -->
+                    <div class="file-info hidden" id="file-info-bar">
+                        <div class="file-details">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2c5530" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            <span id="file-name" class="filename">image.jpg</span>
+                        </div>
+                        <div class="file-actions">
+                            <span id="file-size" class="filesize">19 KB</span>
+                            <button id="clear-file-btn" class="btn-close">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loader (Hidden initially) -->
+                    <div class="loader-box hidden" id="analyze-loader">
+                        <div class="spinner-modern"></div>
+                        <span>Analyzing model...</span>
+                    </div>
+
+                    <button class="btn-primary-dark" id="analyze-btn" disabled>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        ANALYZE LEAF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results View (Hidden Initially) -->
+            <div class="results-view hidden" id="results-widget">
+                <div class="results-grid">
+                    <!-- Left: Original Image -->
+                    <div class="image-presentation">
+                        <img id="result-img" src="" alt="Analyzed leaf">
+                        <!-- We might optionally show what leaf type it is in the corner -->
+                    </div>
+
+                    <!-- Right: Data -->
+                    <div class="data-presentation">
+                        <div class="pill-badge healthy" id="diagnosis-badge">
+                            <span class="dot"></span> <span id="badge-text">HEALTHY</span>
+                        </div>
+                        
+                        <h2 class="diagnosis-header" id="diagnosis-title">Healthy</h2>
+                        <p class="diagnosis-sub" id="diagnosis-subtitle">No disease detected</p>
+                        
+                        <div class="confidence-row">
+                            <span class="conf-label">CONFIDENCE</span>
+                            <div class="conf-bar-bg">
+                                <div class="conf-bar-fill" id="conf-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="conf-value" id="conf-val-text">0%</span>
+                        </div>
+
+                        <!-- Tab System -->
+                        <div class="tabs">
+                            <div class="tab active" data-tab="overview">OVERVIEW</div>
+                            <div class="tab" data-tab="alternatives">ALTERNATIVES</div>
+                            <div class="tab" data-tab="treatment">TREATMENT</div>
+                        </div>
+
+                        <!-- Tab contents -->
+                        <div class="tab-content active" id="tab-overview">
+                            <ul class="checklist">
+                                <li>
+                                    <div class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                    <div><strong>Analysis complete:</strong> Visual structures, coloring, and necrosis indicators processed.</div>
+                                </li>
+                                <li>
+                                    <div class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                    <div><strong>Model confidence high:</strong> The ResNet18 model is highly confident in this prediction category.</div>
+                                </li>
+                                <li>
+                                    <div class="check-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                    <div><strong>Optimal conditions:</strong> Ensure proper watering, drainage, and fertilization.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Cards -->
+                <div class="action-cards">
+                    <div class="action-card">
+                        <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg></div>
+                        <h4>Download Report</h4>
+                        <p>Get a detailed PDF report of this diagnosis.</p>
+                    </div>
+                    <div class="action-card">
+                        <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+                        <h4>Learn More</h4>
+                        <p>Read about the pathogen biology and spread.</p>
+                    </div>
+                    <div class="action-card">
+                        <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#78350f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+                        <h4>Find Nearby Help</h4>
+                        <p>Locate agronomists and suppliers near you.</p>
+                    </div>
+                </div>
+                
+                <button class="btn-text" id="reset-workflow">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6M21.5 22v-6h-6M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.2"/></svg>
+                    ANALYZE ANOTHER IMAGE
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="copy">© 2026 CropSense - Powered by ResNet-18 Model</div>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">API Docs</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

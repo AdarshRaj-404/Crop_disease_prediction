@@ -1,0 +1,17 @@
+torch
+torchvision
+scikit-learn
+pandas
+matplotlib
+opencv-python
+tqdm
+Pillow
+seaborn
+fastapi
+uvicorn
+python-multipart
+tensorflow
+keras
+streamlit
+flask
+fastapi
