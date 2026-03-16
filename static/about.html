@@ -222,7 +222,7 @@
         <div class="hero-left">
             <div class="tag"><span class="line"></span> THE PROJECT</div>
             <h1>AI diagnostics for<br><span style="font-family:'Newsreader',serif;font-style:italic;">every farmer</span></h1>
-            <p class="lead">CropSense is a deep learning project that puts plant disease detection in the hands of anyone with a smartphone camera. Trained on tens of thousands of leaf images, it identifies 23 disease conditions across 8 crop families with near-expert accuracy — instantly and for free.</p>
+            <p class="lead">CropSense is a deep learning project that puts plant disease detection in the hands of anyone with a smartphone camera. Trained on tens of thousands of leaf images, it identifies 15 disease conditions across 8 crops with near-expert accuracy — instantly and for free.</p>
         </div>
         <div class="hero-right">
             <div class="mission-card">
@@ -340,12 +340,12 @@
             <div class="timeline-item">
                 <div class="timeline-phase">PHASE 01</div>
                 <h3>Dataset Preparation</h3>
-                <p>Downloaded and organized the PlantVillage dataset into 23 category folders. Implemented a custom <code>dataset.py</code> using <code>ImageFolder</code> with a 70/15/15 train/val/test split and reproducible seeding.</p>
+                <p>Downloaded and organized the PlantVillage dataset into 15 category folders. Implemented a custom <code>dataset.py</code> using <code>ImageFolder</code> with a 70/15/15 train/val/test split and reproducible seeding.</p>
             </div>
             <div class="timeline-item">
                 <div class="timeline-phase">PHASE 02</div>
                 <h3>Model Design</h3>
-                <p>Chose ResNet-18 for its ideal balance between accuracy and inference speed. Replaced the final fully-connected layer with a 23-class linear layer and loaded ImageNet pre-trained weights.</p>
+                <p>Chose ResNet-18 for its ideal balance between accuracy and inference speed. Replaced the final fully-connected layer with a 15-class linear layer and loaded ImageNet pre-trained weights.</p>
             </div>
             <div class="timeline-item">
                 <div class="timeline-phase">PHASE 03</div>

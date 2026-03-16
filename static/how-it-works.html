@@ -247,16 +247,16 @@
     <div class="page-hero">
         <div class="tag"><span class="line"></span> TECHNICAL OVERVIEW</div>
         <h1>From leaf photo to<br><span style="font-family:'Newsreader',serif;font-style:italic;">diagnosis</span> in seconds</h1>
-        <p>CropSense uses a state-of-the-art ResNet-18 convolutional neural network trained on the PlantVillage dataset to classify 23 distinct plant disease categories across 14 crop species with 96% accuracy.</p>
+        <p>CropSense uses a state-of-the-art ResNet-18 convolutional neural network trained on the PlantVillage dataset to classify 15 distinct plant disease categories across 8 crops with 96% accuracy.</p>
     </div>
 
     <!-- Stats Banner -->
     <div class="stats-banner">
         <div class="stat-block"><div class="num">96%</div><div class="label">Model Accuracy</div></div>
         <div class="stat-divider"></div>
-        <div class="stat-block"><div class="num">23</div><div class="label">Disease Classes</div></div>
+        <div class="stat-block"><div class="num">15</div><div class="label">Disease Classes</div></div>
         <div class="stat-divider"></div>
-        <div class="stat-block"><div class="num">14</div><div class="label">Crop Species</div></div>
+        <div class="stat-block"><div class="num">8</div><div class="label">Crop Species</div></div>
         <div class="stat-divider"></div>
         <div class="stat-block"><div class="num">&lt;1s</div><div class="label">Inference Time</div></div>
         <div class="stat-divider"></div>
@@ -304,7 +304,7 @@
                     </svg>
                 </div>
                 <h3>ResNet-18 Inference</h3>
-                <p>The pre-processed tensor is passed through a fine-tuned ResNet-18 network. The final fully-connected layer outputs 23 class logits.</p>
+                <p>The pre-processed tensor is passed through a fine-tuned ResNet-18 network. The final fully-connected layer outputs 15 class logits.</p>
             </div>
             <div class="step-card">
                 <div class="step-num">STEP 04</div>
@@ -349,7 +349,7 @@
             <div class="pipeline-step">
                 <div class="p-icon">📊</div>
                 <h4>Softmax</h4>
-                <p>23-class probabilities</p>
+                <p>15-class probabilities</p>
             </div>
             <div class="pipeline-step">
                 <div class="p-icon">✅</div>
@@ -372,7 +372,7 @@
                 <div class="spec-row"><span class="spec-label">Parameters</span><span class="spec-value">~11 Million</span></div>
                 <div class="spec-row"><span class="spec-label">Pre-training</span><span class="spec-value">ImageNet (1000 classes)</span></div>
                 <div class="spec-row"><span class="spec-label">Fine-tuning</span><span class="spec-value">PlantVillage Dataset</span></div>
-                <div class="spec-row"><span class="spec-label">Output Classes</span><span class="spec-value green">23</span></div>
+                <div class="spec-row"><span class="spec-label">Output Classes</span><span class="spec-value green">15</span></div>
                 <div class="spec-row"><span class="spec-label">Input Shape</span><span class="spec-value">3 × 224 × 224</span></div>
                 <div class="spec-row"><span class="spec-label">Activation (FC)</span><span class="spec-value">Softmax</span></div>
             </div>
