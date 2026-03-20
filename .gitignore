@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+
+dataset/
+CROP DIS DATASET/
+CROP DIS DATASET COMPRESSED (8)/
+New Plant Diseases Dataset/
+
+*.pth
+.DS_Store
