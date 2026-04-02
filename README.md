@@ -141,7 +141,7 @@ python app.py
 Open browser and go to:
 
 ```
-http://localhost:5000
+http://localhost:8000
 ```
 
 Upload a plant leaf image and the model will predict the disease.
