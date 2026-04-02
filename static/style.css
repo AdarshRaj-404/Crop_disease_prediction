@@ -698,6 +698,25 @@ body.results-mode .split-layout {
     animation: spin 1s linear infinite;
 }
 
+.error-banner {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-banner svg {
+    flex-shrink: 0;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);

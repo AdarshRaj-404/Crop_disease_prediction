@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Action Elements
     const analyzeBtn = document.getElementById('analyze-btn');
     const loader = document.getElementById('analyze-loader');
+    const leafWarning = document.getElementById('leaf-warning');
     
     // Main View Swaps
     const uploadWidget = document.getElementById('upload-widget');
@@ -86,6 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (file.type.startsWith('image/')) {
                 currentFile = file;
                 
+                // Hide any previous warnings
+                leafWarning.classList.add('hidden');
+                
                 // Show file info
                 document.getElementById('file-name').textContent = file.name;
                 fileSize.textContent = formatBytes(file.size);
@@ -115,12 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInfoBar.classList.add('hidden');
         uploadArea.classList.remove('hidden');
         analyzeBtn.disabled = true;
+        leafWarning.classList.add('hidden');
     });
 
     // --- Reset Entire Workflow ---
     resetWorkflowBtn.addEventListener('click', () => {
         currentFile = null;
         fileInput.value = '';
+        leafWarning.classList.add('hidden');
         
         // Reset Body State
         document.body.classList.remove('results-mode');
@@ -143,6 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
     analyzeBtn.addEventListener('click', async () => {
         if (!currentFile) return;
 
+        // UI Reset
+        leafWarning.classList.add('hidden');
+
         // UI Transition to Loading state within the same widget
         fileInfoBar.classList.add('hidden');
         analyzeBtn.classList.add('hidden');
@@ -159,6 +168,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const errData = await response.json();
+                const errorMsg = (errData.detail || "").toString().toLowerCase();
+                
+                if (response.status === 400 && errorMsg.includes("leaf image")) {
+                    // Show on-page warning instead of alert
+                    leafWarning.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    fileInfoBar.classList.remove('hidden');
+                    analyzeBtn.classList.remove('hidden');
+                    return;
+                }
                 throw new Error(errData.detail || "Error predicting");
             }
 

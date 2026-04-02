@@ -9,14 +9,13 @@ def get_model(num_classes=23, pretrained=True):
     # Load the pretrained ResNet18
     weights = models.ResNet18_Weights.DEFAULT if pretrained else None
     model = models.resnet18(weights=weights)
-    
-    # Freeze the parameters if you only want to train the final layer
-    # for param in model.parameters():
-    #     param.requires_grad = False
         
-    # Modify the final fully connected layer
+    # Modify the final fully connected layer with Dropout to prevent overfitting
     num_ftrs = model.fc.in_features
-    model.fc = nn.Linear(num_ftrs, num_classes)
+    model.fc = nn.Sequential(
+        nn.Dropout(0.5), # Regularization 
+        nn.Linear(num_ftrs, num_classes)
+    )
     
     return model
 

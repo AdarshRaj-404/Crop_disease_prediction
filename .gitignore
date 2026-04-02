@@ -1,16 +1,11 @@
-# Virtual environment
 venv/
-
-# Python cache
 __pycache__/
 *.pyc
 
-# Dataset (large files)
+dataset/
+CROP DIS DATASET/
+CROP DIS DATASET COMPRESSED (8)/
 New Plant Diseases Dataset/
 
-# Model files
 *.pth
-
-# OS files
 .DS_Store
-Thumbs.db

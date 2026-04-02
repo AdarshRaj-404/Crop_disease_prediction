@@ -6,7 +6,7 @@ from dataset import get_dataloaders
 from model import get_model
 from tqdm import tqdm
 
-def train_model(num_epochs=10, learning_rate=0.001, model_save_path='best_model.pth'):
+def train_model(num_epochs=5, learning_rate=0.001, model_save_path='best_model.pth'):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
@@ -18,11 +18,13 @@ def train_model(num_epochs=10, learning_rate=0.001, model_save_path='best_model.
     model = get_model(num_classes=num_classes, pretrained=True)
     model = model.to(device)
     
-    # 3. Define Loss & Optimizer
+    # 3. Define Loss & Optimizer - Added weight decay (L2 Regularization) for overfitting
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)
     
     best_val_loss = float('inf')
+    early_stop_patience = 5
+    epochs_no_improve = 0
     
     # 4. Training Loop
     for epoch in range(num_epochs):
@@ -76,7 +78,7 @@ def train_model(num_epochs=10, learning_rate=0.001, model_save_path='best_model.
         val_epoch_acc = val_running_corrects.double() / len(val_loader.dataset)
         print(f"Val Loss: {val_epoch_loss:.4f} Acc: {val_epoch_acc:.4f}")
         
-        # Save best model
+        # Save best model and Early Stopping
         if val_epoch_loss < best_val_loss:
             print(f"Validation loss decreased ({best_val_loss:.4f} --> {val_epoch_loss:.4f}). Saving model...")
             loss_file = os.path.dirname(model_save_path)
@@ -84,10 +86,17 @@ def train_model(num_epochs=10, learning_rate=0.001, model_save_path='best_model.
                 os.makedirs(loss_file)
             torch.save(model.state_dict(), model_save_path)
             best_val_loss = val_epoch_loss
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
+            print(f"Validation loss did not improve for {epochs_no_improve} epochs.")
+            if epochs_no_improve >= early_stop_patience:
+                print("Early stopping triggered. Stopping training.")
+                break
 
     print("Training complete.")
 
 if __name__ == '__main__':
     # You can change epochs, lr, etc here.
     save_path = os.path.join(os.path.dirname(__file__), '..', 'best_model.pth')
-    train_model(num_epochs=5, learning_rate=0.001, model_save_path=save_path)
+    train_model(num_epochs=3, learning_rate=0.001, model_save_path=save_path)
