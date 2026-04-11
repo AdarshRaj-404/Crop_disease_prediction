@@ -10,9 +10,7 @@ def get_model(num_classes=23, pretrained=True):
     weights = models.ResNet18_Weights.DEFAULT if pretrained else None
     model = models.resnet18(weights=weights)
     
-    # Freeze the parameters if you only want to train the final layer
-    # for param in model.parameters():
-    #     param.requires_grad = False
+    
         
     # Modify the final fully connected layer
     num_ftrs = model.fc.in_features

@@ -279,8 +279,8 @@
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                     </svg>
                 </div>
-                <h3>Image Upload</h3>
-                <p>Drag &amp; drop or browse to upload any JPEG/PNG photo of a crop leaf. Supports photos from mobile cameras, drones, or lab settings.</p>
+                <h3>Context &amp; Upload</h3>
+                <p>Select your specific crop from the custom dropdown menu to provide biological context, then upload any JPEG/PNG photo of the target leaf.</p>
             </div>
             <div class="step-card">
                 <div class="step-num">STEP 02</div>
@@ -313,8 +313,8 @@
                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                     </svg>
                 </div>
-                <h3>Result &amp; Confidence</h3>
-                <p>Softmax converts logits to probabilities. The top prediction and confidence score are returned as JSON and displayed with treatment context.</p>
+                <h3>Result &amp; Treatments</h3>
+                <p>The top prediction is cross-validated against your crop selection. If valid, the UI renders the confidence score, smart search links, and targeted treatment protocols.</p>
             </div>
         </div>
     </div>
@@ -397,7 +397,7 @@
             <div class="arch-card">
                 <h3><span class="dot"></span> API Endpoint</h3>
                 <div class="spec-row"><span class="spec-label">Route</span><span class="spec-value green">POST /predict</span></div>
-                <div class="spec-row"><span class="spec-label">Input</span><span class="spec-value">multipart/form-data</span></div>
+                <div class="spec-row"><span class="spec-label">Input</span><span class="spec-value">Image + target_crop form data</span></div>
                 <div class="spec-row"><span class="spec-label">Response</span><span class="spec-value">JSON</span></div>
                 <div class="spec-row"><span class="spec-label">Framework</span><span class="spec-value">FastAPI + Uvicorn</span></div>
                 <div class="spec-row"><span class="spec-label">CORS</span><span class="spec-value green">Enabled</span></div>

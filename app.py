@@ -1,7 +1,7 @@
 import os
 import torch
 import json
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -38,6 +38,15 @@ else:
 
 num_classes = len(classes)
 
+# Load treatments mapping
+try:
+    with open(os.path.join(os.path.dirname(__file__), 'treatments.json'), 'r') as f:
+        treatments_db = json.load(f)
+except Exception as e:
+    print("Warning: treatments.json not found:", e)
+    treatments_db = {}
+
+
 # Initialize Model globally so it stays in memory
 try:
     model = get_model(num_classes=num_classes, pretrained=False)
@@ -57,8 +66,20 @@ transform = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
+def format_crop_name(c):
+    name = c.split('___')[0].replace('_', ' ')
+    if name == "Pepper, bell":
+        name = "Pepper (Bell)"
+    return name
+
+@app.get("/crops")
+async def get_crops():
+    # Extract unique crop names from class names using helper
+    crop_list = sorted(list(set([format_crop_name(c) for c in classes])))
+    return JSONResponse(content={"crops": crop_list})
+
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...), crop: str = Form(...)):
     if model is None:
         raise HTTPException(status_code=500, detail="Model not initialized. Ensure training is done and best_model.pth exists.")
         
@@ -73,14 +94,26 @@ async def predict(file: UploadFile = File(...)):
             confidence, preds = torch.max(probabilities, 0)
             
         predicted_class = classes[preds.item()]
+        predicted_crop = format_crop_name(predicted_class)
+        
+        # Validate that the predicted crop matches the user-selected crop
+        if crop.lower() != predicted_crop.lower():
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Please upload a valid {crop} image. The model detected '{predicted_crop}' instead."
+            )
         
         # Calculate human readable format for class names
         formatted_class = predicted_class.replace('___', ' - ').replace('_', ' ')
         
+        # Get dynamic treatment plan
+        treatment_steps = treatments_db.get(predicted_class, ["Consult a local agronomist for specific treatment."])
+        
         return JSONResponse(content={
             "predicted_class": formatted_class,
             "raw_class": predicted_class,
-            "confidence": float(confidence.item() * 100)
+            "confidence": float(confidence.item() * 100),
+            "treatment": treatment_steps
         })
 
     except Exception as e:

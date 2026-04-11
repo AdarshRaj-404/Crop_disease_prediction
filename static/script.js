@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Dropzone Elements
     const dropZone = document.getElementById('drop-zone');
+    const cropSelect = document.getElementById('crop-select');
+    const customCropWrapper = document.getElementById('custom-crop-wrapper');
+    const customCropTrigger = document.getElementById('custom-crop-trigger');
+    const customCropText = document.getElementById('custom-crop-text');
+    const customCropOptions = document.getElementById('custom-crop-options');
     const fileInput = document.getElementById('file-input');
     const browseBtn = document.getElementById('browse-btn');
     const uploadArea = document.querySelector('.upload-area');
@@ -14,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Action Elements
     const analyzeBtn = document.getElementById('analyze-btn');
     const loader = document.getElementById('analyze-loader');
+    const errorMessage = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
     
     // Main View Swaps
     const uploadWidget = document.getElementById('upload-widget');
@@ -34,6 +41,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabContents = document.querySelectorAll('.tab-content');
 
     let currentFile = null;
+
+    // --- Fetch Crops ---
+    fetch('/crops')
+        .then(res => res.json())
+        .then(data => {
+            customCropText.textContent = 'Select a crop...';
+            customCropOptions.innerHTML = '';
+            data.crops.forEach(crop => {
+                const opt = document.createElement('div');
+                opt.className = 'custom-option';
+                opt.textContent = crop;
+                
+                opt.addEventListener('click', () => {
+                    cropSelect.value = crop;
+                    customCropText.textContent = crop;
+                    closeDropdown();
+                });
+                
+                customCropOptions.appendChild(opt);
+            });
+        })
+        .catch(err => console.error("Error fetching crops:", err));
+
+    function toggleDropdown() {
+        customCropOptions.classList.toggle('hidden');
+        customCropTrigger.classList.toggle('active');
+    }
+
+    function closeDropdown() {
+        customCropOptions.classList.add('hidden');
+        customCropTrigger.classList.remove('active');
+    }
+
+    if (customCropTrigger) {
+        customCropTrigger.addEventListener('click', toggleDropdown);
+    }
+
+    document.addEventListener('click', (e) => {
+        if (customCropWrapper && !customCropWrapper.contains(e.target)) {
+            closeDropdown();
+        }
+    });
 
     // --- Drag & Drop Handlers ---
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -103,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.readAsDataURL(file);
                 
             } else {
-                alert("Please select a valid image file.");
+                errorMessage.classList.remove('hidden');
+                errorText.textContent = "Please select a valid image file.";
             }
         }
     }
@@ -115,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInfoBar.classList.add('hidden');
         uploadArea.classList.remove('hidden');
         analyzeBtn.disabled = true;
+        errorMessage.classList.add('hidden');
     });
 
     // --- Reset Entire Workflow ---
@@ -133,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInfoBar.classList.add('hidden');
         uploadArea.classList.remove('hidden');
         analyzeBtn.disabled = true;
+        errorMessage.classList.add('hidden');
         
         // Reset Results data
         confBar.style.width = '0%';
@@ -142,14 +194,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Analyze Action ---
     analyzeBtn.addEventListener('click', async () => {
         if (!currentFile) return;
+        
+        const selectedCrop = cropSelect.value;
+        if (!selectedCrop) {
+            errorMessage.classList.remove('hidden');
+            errorText.textContent = "Please select a crop from the dropdown above.";
+            return;
+        }
 
         // UI Transition to Loading state within the same widget
         fileInfoBar.classList.add('hidden');
         analyzeBtn.classList.add('hidden');
         loader.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
 
         const formData = new FormData();
         formData.append('file', currentFile);
+        formData.append('crop', selectedCrop);
 
         try {
             const response = await fetch('/predict', {
@@ -167,7 +228,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             console.error("Prediction Error:", error);
-            alert("Failed to analyze image: " + error.message);
+            
+            errorMessage.classList.remove('hidden');
+            errorText.textContent = `Please upload a valid ${selectedCrop} image.`;
+            
             // Revert UI on error
             loader.classList.add('hidden');
             fileInfoBar.classList.remove('hidden');
@@ -192,6 +256,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let isHealthy = data.raw_class.toLowerCase().includes('healthy');
         
+        // Update Learn More Link
+        const learnMoreLink = document.getElementById('learn-more-link');
+        if (learnMoreLink) {
+            const query = isHealthy ? `${data.predicted_class} cultivation best practices agriculture` : `${data.predicted_class} disease agriculture pathology`;
+            learnMoreLink.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        }
+        
         if (isHealthy) {
             diagnosisBadge.className = 'pill-badge healthy';
             badgeText.textContent = 'HEALTHY';
@@ -211,6 +282,26 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             confBar.style.width = confidence + '%';
         }, 100);
+
+        // Populate Dynamic Treatment List
+        const treatmentList = document.getElementById('treatment-list');
+        if (treatmentList && data.treatment) {
+            treatmentList.innerHTML = '';
+            data.treatment.forEach(step => {
+                const li = document.createElement('li');
+                
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'check-icon';
+                iconDiv.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                
+                const textDiv = document.createElement('div');
+                textDiv.textContent = step;
+                
+                li.appendChild(iconDiv);
+                li.appendChild(textDiv);
+                treatmentList.appendChild(li);
+            });
+        }
     }
     
     // --- Tabs System ---
